@@ -1,5 +1,5 @@
 # Build Stage
-FROM node:12-buster-slim AS umbrel-middleware-builder
+FROM node:16-buster-slim AS umbrel-electrs-builder
 
 # Install tools
 # RUN apt-get update \
@@ -9,23 +9,26 @@ FROM node:12-buster-slim AS umbrel-middleware-builder
 # Create app directory
 WORKDIR /app
 
-# Copy 'yarn.lock' and 'package.json'
-COPY yarn.lock package.json ./
+# Copy 'package-lock.json' and 'package.json'
+COPY package-lock.json package.json ./
+COPY apps ./apps
 
 # Install dependencies
-RUN yarn install --production
+RUN npm install
 
 # Copy project files and folders to the current working directory (i.e. '/app')
 COPY . .
 
+RUN npm run build:frontend
+
 # Final image
-FROM node:12-buster-slim AS umbrel-middleware
+FROM node:16-buster-slim AS umbrel-electrs
 
 # Copy built code from build stage to '/app' directory
-COPY --from=umbrel-middleware-builder /app /app
+COPY --from=umbrel-electrs-builder /app /app
 
 # Change directory to '/app' 
 WORKDIR /app
 
 EXPOSE 3006
-CMD [ "yarn", "start" ]
+CMD [ "npm", "run", "dev:backend" ]

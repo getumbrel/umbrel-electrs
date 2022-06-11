@@ -1,0 +1,40 @@
+version: "3.7"
+
+services:
+  app:
+    build: .
+    command: npm run dev:backend
+    restart: on-failure
+    environment:
+      ELECTRUM_HIDDEN_SERVICE: "somehiddenserviceurl.onion"
+      ELECTRUM_LOCAL_SERVICE: "umbrel.local"
+      ELECTRS_HOST: electrs
+      BITCOIN_HOST: bitcoind
+      RPC_USER: umbrel
+      RPC_PASSWORD: moneyprintergobrrr
+    ports:
+      - "3006:3006"
+  electrs:
+    image: getumbrel/electrs:v0.9.4@sha256:b1590ac6cfb0e5b481c6a7af7f0626d76cbb91c63702b0f5c47e2829e9c37997
+    environment:
+      ELECTRS_LOG_FILTERS: "INFO"
+      ELECTRS_NETWORK: "regtest"
+      ELECTRS_DAEMON_RPC_ADDR: "bitcoind:18443"
+      ELECTRS_DAEMON_P2P_ADDR: "bitcoind:18444"
+      ELECTRS_ELECTRUM_RPC_ADDR: "0.0.0.0:50001"
+      ELECTRS_SERVER_BANNER: "Umbrel Electrs"
+      ELECTRS_COOKIE_FILE: "/bitcoin/regtest/.cookie"
+    volumes:
+      - ${PWD}/data/bitcoin:/bitcoin
+      - ${PWD}/data/electrs:/data
+    restart: always
+    ports:
+      - "50001:50001"
+  bitcoind:
+    image: lncm/bitcoind:v22.0@sha256:37a1adb29b3abc9f972f0d981f45e41e5fca2e22816a023faa9fdc0084aa4507
+    command: -regtest -rpcbind=0.0.0.0 -rpcallowip=0.0.0.0/0 -rpcauth=umbrel:5071d8b3ba93e53e414446ff9f1b7d7b$$375e9731abd2cd2c2c44d2327ec19f4f2644256fdeaf4fc5229bf98b778aafec
+    volumes:
+      - ${PWD}/data/bitcoin:/data/.bitcoin
+    restart: on-failure
+    ports:
+      - "18443:18443"
