@@ -2,7 +2,8 @@ const ElectrumClient = require("@lily-technologies/electrum-client");
 const bitcoindService = require("services/bitcoind");
 
 const FULCRUM_HOST = process.env.FULCRUM_HOST || "0.0.0.0";
-const rpcClient = new ElectrumClient(50001, FULCRUM_HOST, "tcp");
+const FULCRUM_PORT = parseInt(process.env.FULCRUM_PORT) || 50001;
+const rpcClient = new ElectrumClient(FULCRUM_PORT, FULCRUM_HOST, "tcp");
 
 async function getVersion() {
   const initClient = await rpcClient.initElectrum({
