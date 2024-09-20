@@ -2,7 +2,7 @@
   <div
     class="h-screen flex flex-col items-center justify-center min-h-full p-2"
   >
-    <img alt="Electrs" src="@/assets/icon.svg" class="mb-16 rounded-3xl logo" />
+    <img alt="Fulcrum" src="@/assets/icon.svg" class="mb-16 rounded-3xl logo" />
 
     <div class="w-1/2 mb-2">
       <progress-bar :percentage="progress" class="h-1"></progress-bar>

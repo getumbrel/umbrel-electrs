@@ -4,7 +4,7 @@
       <transition name="loading" mode>
         <div v-if="isIframe">
           <div class="flex col items-center justify-center">
-            <img alt="Electrs" src="@/assets/icon.svg" class="mb-5 logo" />
+            <img alt="Fulcrum" src="@/assets/icon.svg" class="mb-5 logo" />
             <span class="text-muted w-75 text-center">
               <small
                 >For security reasons this app cannot be embedded in an

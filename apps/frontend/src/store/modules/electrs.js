@@ -30,7 +30,7 @@ const mutations = {
 const actions = {
   async getConnectionInformation({ commit }) {
     const connectionInfo = await API.get(
-      `${process.env.VUE_APP_API_BASE_URL}/v1/electrs/electrum-connection-details`
+      `${process.env.VUE_APP_API_BASE_URL}/v1/fulcrum/electrum-connection-details`
     );
 
     if (connectionInfo) {
@@ -40,7 +40,7 @@ const actions = {
 
   async getVersion({ commit }) {
     const version = await API.get(
-      `${process.env.VUE_APP_API_BASE_URL}/v1/electrs/version`
+      `${process.env.VUE_APP_API_BASE_URL}/v1/fulcrum/version`
     );
 
     if (version) {
@@ -50,7 +50,7 @@ const actions = {
 
   async getSyncPercent({ commit }) {
     const syncPercent = await API.get(
-      `${process.env.VUE_APP_API_BASE_URL}/v1/electrs/syncPercent`
+      `${process.env.VUE_APP_API_BASE_URL}/v1/fulcrum/syncPercent`
     );
 
     if (syncPercent) {

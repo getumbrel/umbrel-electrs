@@ -2,7 +2,7 @@
   <div class="mt-16">
     <p class="mb-8 text-neutral-900 dark:text-neutral-300 text-lg">
       Use the following details to connect your wallet or application to
-      Electrs.
+      Fulcrum.
     </p>
     <div class="flex flex-col md:grid md:grid-cols-12 md:gap-8">
       <div
@@ -124,7 +124,7 @@
       <p
         class="mt-12 text-neutral-900 dark:text-neutral-300 text-lg whitespace-normal"
       >
-        Looking for step-by-step instructions to connect your wallet to Electrs?
+        Looking for step-by-step instructions to connect your wallet to Fulcrum?
         <a class="underline" href="https://link.umbrel.com/connect-electrs" target="_blank">Click here</a>.
       </p>
     </div>
@@ -152,14 +152,14 @@ export default {
   },
   computed: {
     ...mapState({
-      electrs: function(state) {
-        return state.electrs;
+      fulcrum: function(state) {
+        return state.fulcrum;
       },
       connectionInfo: function(state) {
         if (this.selectedNetwork === "local") {
-          return state.electrs.connectionInfo.local;
+          return state.fulcrum.connectionInfo.local;
         } else {
-          return state.electrs.connectionInfo.tor;
+          return state.fulcrum.connectionInfo.tor;
         }
       },
     }),

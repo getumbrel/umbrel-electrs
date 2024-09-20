@@ -1,5 +1,5 @@
 {
-  "name": "umbrel-electrs-frontend",
+  "name": "umbrel-fulcrum-frontend",
   "version": "0.3.29",
   "private": true,
   "scripts": {

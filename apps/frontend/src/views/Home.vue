@@ -21,7 +21,7 @@
           </svg>
           <p class="ml-1 text-green-500 text-lg">Running</p>
         </div>
-        <h3 class="text-5xl font-semibold  dark:text-white">Electrs</h3>
+        <h3 class="text-5xl font-semibold  dark:text-white">Fulcrum</h3>
         <div class="mt-2">
           <span class="text-gray-500 font-medium">{{
             version ? `${version}` : "..."
@@ -65,21 +65,21 @@ export default {
   },
   computed: {
     ...mapState({
-      version: (state) => state.electrs.version,
+      version: (state) => state.fulcrum.version,
       syncPercent: (state) => {
-        return state.electrs.syncPercent;
+        return state.fulcrum.syncPercent;
       },
     }),
   },
   methods:  {
     fetchData() {
-    this.$store.dispatch("electrs/getSyncPercent");
+    this.$store.dispatch("fulcrum/getSyncPercent");
     }
   },
   created() {
     this.fetchData();
-    this.$store.dispatch("electrs/getVersion");
-    this.$store.dispatch("electrs/getConnectionInformation");
+    this.$store.dispatch("fulcrum/getVersion");
+    this.$store.dispatch("fulcrum/getConnectionInformation");
     this.dataInterval = window.setInterval(this.fetchData, 10000);
   },
   beforeDestroy() {

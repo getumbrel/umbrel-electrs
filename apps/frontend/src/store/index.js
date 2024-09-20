@@ -3,13 +3,13 @@ import Vuex from "vuex";
 
 //Modules
 import system from "./modules/system";
-import electrs from "./modules/electrs";
+import fulcrum from "./modules/fulcrum";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
     system,
-    electrs
+    fulcrum
   }
 });

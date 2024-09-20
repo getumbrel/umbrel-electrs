@@ -8,25 +8,25 @@ services:
     environment:
       ELECTRUM_HIDDEN_SERVICE: "somehiddenserviceurl.onion"
       ELECTRUM_LOCAL_SERVICE: "umbrel.local"
-      ELECTRS_HOST: electrs
+      FULCRUM_HOST: fulcrum
       BITCOIN_HOST: bitcoind
       RPC_USER: umbrel
       RPC_PASSWORD: moneyprintergobrrr
     ports:
       - "3006:3006"
-  electrs:
-    image: getumbrel/electrs:v0.9.4@sha256:b1590ac6cfb0e5b481c6a7af7f0626d76cbb91c63702b0f5c47e2829e9c37997
+  fulcrum:
+    image: getumbrel/fulcrum:v0.9.4@sha256:b1590ac6cfb0e5b481c6a7af7f0626d76cbb91c63702b0f5c47e2829e9c37997
     environment:
-      ELECTRS_LOG_FILTERS: "INFO"
-      ELECTRS_NETWORK: "regtest"
-      ELECTRS_DAEMON_RPC_ADDR: "bitcoind:18443"
-      ELECTRS_DAEMON_P2P_ADDR: "bitcoind:18444"
-      ELECTRS_ELECTRUM_RPC_ADDR: "0.0.0.0:50001"
-      ELECTRS_SERVER_BANNER: "Umbrel Electrs"
-      ELECTRS_COOKIE_FILE: "/bitcoin/regtest/.cookie"
+      FULCRUM_LOG_FILTERS: "INFO"
+      FULCRUM_NETWORK: "regtest"
+      FULCRUM_DAEMON_RPC_ADDR: "bitcoind:18443"
+      FULCRUM_DAEMON_P2P_ADDR: "bitcoind:18444"
+      FULCRUM_ELECTRUM_RPC_ADDR: "0.0.0.0:50001"
+      FULCRUM_SERVER_BANNER: "Umbrel Fulcrum"
+      FULCRUM_COOKIE_FILE: "/bitcoin/regtest/.cookie"
     volumes:
       - ${PWD}/data/bitcoin:/bitcoin
-      - ${PWD}/data/electrs:/data
+      - ${PWD}/data/fulcrum:/data
     restart: always
     ports:
       - "50001:50001"

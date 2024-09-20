@@ -16,7 +16,7 @@ const errorHandleMiddleware = require("middlewares/errorHandling.js");
 const logger = require("utils/logger.js");
 
 const ping = require("routes/ping.js");
-const electrs = require("routes/v1/electrs.js");
+const fulcrum = require("routes/v1/fulcrum.js");
 const app = express();
 
 app.use(bodyParser.json());
@@ -30,7 +30,7 @@ app.use(morgan(logger.morganConfiguration));
 app.use("/", express.static("../frontend/dist"));
 
 app.use("/ping", ping);
-app.use("/v1/electrs", electrs);
+app.use("/v1/fulcrum", fulcrum);
 
 app.use(errorHandleMiddleware);
 app.use((req, res) => {

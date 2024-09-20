@@ -1,13 +1,13 @@
 {
-  "name": "umbrel-electrs",
+  "name": "umbrel-fulcrum",
   "version": "1.0.1",
   "private": true,
   "description": "",
   "author": "",
   "scripts": {
-    "build:frontend": "npm run build -w umbrel-electrs-frontend",
-    "dev:backend": "npm run start -w umbrel-electrs-backend",
-    "dev:frontend": "npm run serve -w umbrel-electrs-frontend",
+    "build:frontend": "npm run build -w umbrel-fulcrum-frontend",
+    "dev:backend": "npm run start -w umbrel-fulcrum-backend",
+    "dev:frontend": "npm run serve -w umbrel-fulcrum-frontend",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "main": "index.js",

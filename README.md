@@ -2,9 +2,9 @@
   <a href="https://umbrel.com">
     <img src="https://i.imgur.com/5u1Eweg.jpg" alt="Logo">
   </a>
-  <h1 align="center">Electrs for Umbrel</h1>
+  <h1 align="center">Fulcrum for Umbrel</h1>
   <p align="center">
-    Run an Electrum server on your Umbrel personal server. An official app by Umbrel. Powered by Electrs.
+    Run an Electrum server on your Umbrel personal server. An official app by Umbrel. Powered by Fulcrum.
     <br />
     <a href="https://umbrel.com"><strong>umbrel.com »</strong></a>
     <br />
@@ -32,12 +32,12 @@ This app can be installed in one click via the Umbrel App Store.
 
 We welcome and appreciate new contributions!
 
-If you're a developer looking to help but not sure where to begin, look for [these issues](https://github.com/getumbrel/umbrel-electrs/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) that have specifically been marked as being friendly to new contributors.
+If you're a developer looking to help but not sure where to begin, look for [these issues](https://github.com/getumbrel/umbrel-fulcrum/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) that have specifically been marked as being friendly to new contributors.
 
-If you're looking for a bigger challenge, before opening a pull request please [create an issue](https://github.com/getumbrel/umbrel-electrs/issues/new/choose) or [join our community chat](https://t.me/getumbrel) to get feedback, discuss the best way to tackle the challenge, and to ensure that there's no duplication of work.
+If you're looking for a bigger challenge, before opening a pull request please [create an issue](https://github.com/getumbrel/umbrel-fulcrum/issues/new/choose) or [join our community chat](https://t.me/getumbrel) to get feedback, discuss the best way to tackle the challenge, and to ensure that there's no duplication of work.
 
 ---
 
-[![License](https://img.shields.io/github/license/getumbrel/umbrel-electrs?color=%235351FB)](https://github.com/getumbrel/umbrel-electrs/blob/master/LICENSE.md)
+[![License](https://img.shields.io/github/license/getumbrel/umbrel-fulcrum?color=%235351FB)](https://github.com/getumbrel/umbrel-fulcrum/blob/master/LICENSE.md)
 
 [umbrel.com](https://umbrel.com)

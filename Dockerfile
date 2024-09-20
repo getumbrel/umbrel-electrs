@@ -1,5 +1,5 @@
 # Build Stage
-FROM node:16-buster-slim AS umbrel-electrs-builder
+FROM node:16-buster-slim AS umbrel-fulcrum-builder
 
 # Install tools
 # RUN apt-get update \
@@ -22,10 +22,10 @@ COPY . .
 RUN npm run build:frontend
 
 # Final image
-FROM node:16-buster-slim AS umbrel-electrs
+FROM node:16-buster-slim AS umbrel-fulcrum
 
 # Copy built code from build stage to '/app' directory
-COPY --from=umbrel-electrs-builder /app /app
+COPY --from=umbrel-fulcrum-builder /app /app
 
 # Change directory to '/app' 
 WORKDIR /app
