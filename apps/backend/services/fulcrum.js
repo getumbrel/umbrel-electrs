@@ -15,6 +15,7 @@ async function getVersion() {
   const version = initClient.versionInfo[0].substring(
     initClient.versionInfo[0].indexOf("/") + 1
   );
+  initClient.close()
   return version;
 }
 
@@ -38,6 +39,7 @@ async function syncPercent() {
   const {
     height: fulcrumHeight
   } = await initClient.blockchainHeaders_subscribe();
+  initClient.close()
   return (fulcrumHeight / bitcoindResponse.blocks) * 100;
 }
 
