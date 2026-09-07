@@ -33,18 +33,17 @@ export function createElectrsGuiService({
     async getLegacySyncPercent() {
       try {
         const coreInfo = await core.getBlockchainInfo();
-        if (coreInfo.initialblockdownload) return -1;
         await electrs.getVersion();
         const indexedHeight = await electrs.getTip();
         return (indexedHeight / coreInfo.blocks) * 100;
       } catch {
         const coreInfo = await core.getBlockchainInfo().catch(() => null);
-        if (!coreInfo || coreInfo.initialblockdownload) return -2;
-        const indexedHeight = await progress?.getIndexedHeight();
+        if (!coreInfo) return -2;
+        const indexedHeight = await progress?.getIndexedHeight().catch(() => null);
         if (isInitialIndexingProgress(indexedHeight, coreInfo.blocks)) {
           return (indexedHeight / coreInfo.blocks) * 100;
         }
-        return -2;
+        return coreInfo.initialblockdownload ? -1 : -2;
       }
     },
     async getStatus(): Promise<IndexerStatus> {
@@ -62,15 +61,6 @@ export function createElectrsGuiService({
         };
       }
 
-      if (coreInfo.initialblockdownload) {
-        return deriveIndexerStatus({
-          coreHeight: coreInfo.blocks,
-          indexedHeight: null,
-          initialBlockDownload: true,
-          version: null,
-        });
-      }
-
       try {
         const [indexedHeight, version] = await Promise.all([
           electrs.getTip(),
@@ -83,11 +73,12 @@ export function createElectrsGuiService({
           version,
         });
       } catch {
-        const indexedHeight = await progress?.getIndexedHeight() ?? null;
+        const indexedHeight = await progress?.getIndexedHeight().catch(() => null) ?? null;
+        const hasProgress = isInitialIndexingProgress(indexedHeight, coreInfo.blocks);
         return deriveIndexerStatus({
           coreHeight: coreInfo.blocks,
-          indexedHeight: isInitialIndexingProgress(indexedHeight, coreInfo.blocks) ? indexedHeight : null,
-          initialBlockDownload: false,
+          indexedHeight: hasProgress ? indexedHeight : null,
+          initialBlockDownload: coreInfo.initialblockdownload && !hasProgress,
           version: null,
         });
       }

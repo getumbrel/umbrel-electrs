@@ -8,17 +8,40 @@ const connections = {
 };
 
 describe("ElectrsGuiService", () => {
-  it("waits for Bitcoin Core without querying Electrs during IBD", async () => {
-    const getElectrsTip = vi.fn();
+  it("reports real provider progress while Bitcoin Core is in IBD", async () => {
     const service = createElectrsGuiService({
       core: { getBlockchainInfo: async () => ({ blocks: 80, initialblockdownload: true }) },
-      electrs: { getTip: getElectrsTip, getVersion: vi.fn() },
+      electrs: { getTip: async () => { throw new Error("listener closed during indexing"); }, getVersion: vi.fn() },
+      progress: { getIndexedHeight: async () => 20 },
       connections
     });
 
-    expect(await service.getStatus()).toMatchObject({ state: "waiting-for-core", coreHeight: 80 });
+    expect(await service.getStatus()).toEqual({
+      state: "indexing",
+      version: null,
+      coreHeight: 80,
+      indexedHeight: 20,
+      percent: 25,
+      message: "Indexing Bitcoin blocks"
+    });
+    expect(await service.getLegacySyncPercent()).toBe(25);
+  });
+
+  it("keeps waiting for Bitcoin Core when Electrs has no reportable progress during IBD", async () => {
+    const service = createElectrsGuiService({
+      core: { getBlockchainInfo: async () => ({ blocks: 80, initialblockdownload: true }) },
+      electrs: { getTip: async () => { throw new Error("listener unavailable"); }, getVersion: vi.fn() },
+      progress: { getIndexedHeight: async () => { throw new Error("metrics unavailable"); } },
+      connections
+    });
+
+    expect(await service.getStatus()).toMatchObject({
+      state: "waiting-for-core",
+      coreHeight: 80,
+      indexedHeight: null,
+      percent: null
+    });
     expect(await service.getLegacySyncPercent()).toBe(-1);
-    expect(getElectrsTip).not.toHaveBeenCalled();
   });
 
   it("returns an accurate synchronized status", async () => {
@@ -94,18 +117,20 @@ describe("ElectrsGuiService", () => {
   });
 
   it.each([
-    ["equal to", 110],
-    ["ahead of", 111],
-  ])("never infers readiness from provider progress %s Core when the listener is unavailable", async (_label, indexedHeight) => {
+    ["equal to", 110, false, "connecting", -2],
+    ["ahead of", 111, false, "connecting", -2],
+    ["equal to", 110, true, "waiting-for-core", -1],
+    ["ahead of", 111, true, "waiting-for-core", -1],
+  ] as const)("never infers readiness from provider progress %s Core when IBD is %s", async (_label, indexedHeight, initialblockdownload, state, legacyPercent) => {
     const service = createElectrsGuiService({
-      core: { getBlockchainInfo: async () => ({ blocks: 110, initialblockdownload: false }) },
+      core: { getBlockchainInfo: async () => ({ blocks: 110, initialblockdownload }) },
       electrs: { getTip: async () => { throw new Error("listener unavailable"); }, getVersion: vi.fn() },
       progress: { getIndexedHeight: async () => indexedHeight },
       connections
     });
 
-    expect(await service.getStatus()).toMatchObject({ state: "connecting", indexedHeight: null, percent: null });
-    expect(await service.getLegacySyncPercent()).toBe(-2);
+    expect(await service.getStatus()).toMatchObject({ state, indexedHeight: null, percent: null });
+    expect(await service.getLegacySyncPercent()).toBe(legacyPercent);
   });
 
   it("preserves the legacy unclamped synchronization percentage", async () => {
