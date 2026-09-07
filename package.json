@@ -1,25 +1,69 @@
 {
-  "name": "umbrel-electrs",
-  "version": "1.0.4",
+  "name": "umbrel-bitcoin-electrs-gui",
+  "version": "1.0.0",
   "private": true,
-  "description": "",
-  "author": "",
-  "scripts": {
-    "build:frontend": "npm run build -w umbrel-electrs-frontend",
-    "dev:backend": "npm run start -w umbrel-electrs-backend",
-    "dev:frontend": "npm run serve -w umbrel-electrs-frontend",
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "type": "module",
+  "description": "Electrs for Bitcoin — Umbrel application interface",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "engines": {
+    "node": ">=24.15.0 <25",
+    "npm": ">=12.0.2 <13"
   },
-  "main": "index.js",
+  "packageManager": "npm@12.0.2",
+  "allowScripts": {
+    "esbuild@0.28.2": true
+  },
+  "scripts": {
+    "dev": "tsx apps/server/src/index.ts",
+    "dev:ui": "vite --config apps/ui/vite.config.ts",
+    "build": "npm run build:ui && npm run build:server",
+    "build:ui": "vite build --config apps/ui/vite.config.ts",
+    "build:server": "tsc -p tsconfig.server.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.server.json --noEmit",
+    "lint": "eslint apps packages",
+    "audit:production": "npm audit --omit=dev --audit-level=high"
+  },
   "dependencies": {
-    "autoprefixer": "^10",
-    "postcss": "^8",
-    "tailwindcss": "^3"
+    "@fastify/helmet": "13.1.0",
+    "@fastify/static": "10.1.3",
+    "copy-to-clipboard": "3.3.3",
+    "fastify": "5.12.1",
+    "zod": "4.4.3"
   },
   "devDependencies": {
-    "vue-cli-plugin-tailwind": "~3.0.0"
-  },
-  "workspaces": [
-    "apps/*"
-  ]
+    "@eslint/js": "10.0.1",
+    "@fontsource-variable/dm-sans": "5.3.0",
+    "@fontsource-variable/outfit": "5.3.0",
+    "@playwright/test": "1.62.1",
+    "@radix-ui/react-dialog": "1.1.23",
+    "@radix-ui/react-tabs": "1.1.21",
+    "@tanstack/react-query": "5.101.4",
+    "@testing-library/jest-dom": "7.0.0",
+    "@testing-library/react": "16.3.2",
+    "@testing-library/user-event": "14.6.3",
+    "@types/node": "24.13.3",
+    "@types/qrcode": "1.5.6",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.4",
+    "@vitejs/plugin-react": "6.0.5",
+    "@vitest/coverage-v8": "4.1.10",
+    "eslint": "10.8.1",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "eslint-plugin-react-refresh": "0.5.3",
+    "globals": "17.9.0",
+    "jsdom": "30.0.1",
+    "lucide-react": "1.30.0",
+    "playwright": "1.62.1",
+    "qrcode": "1.5.4",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "tsx": "4.23.11",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.66.0",
+    "vite": "8.2.1",
+    "vitest": "4.1.10"
+  }
 }

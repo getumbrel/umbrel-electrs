@@ -1,43 +1,55 @@
-<p align="center">
-  <a href="https://umbrel.com">
-    <img src="https://i.imgur.com/5u1Eweg.jpg" alt="Logo">
-  </a>
-  <h1 align="center">Electrs for Umbrel</h1>
-  <p align="center">
-    Run an Electrum server on your Umbrel personal server. An official app by Umbrel. Powered by Electrs.
-    <br />
-    <a href="https://umbrel.com"><strong>umbrel.com »</strong></a>
-    <br />
-    <br />
-    <a href="https://twitter.com/umbrel">
-      <img src="https://img.shields.io/twitter/follow/umbrel?style=social" />
-    </a>
-    <a href="https://t.me/getumbrel">
-      <img src="https://img.shields.io/badge/community-chat-%235351FB">
-    </a>
-    <a href="https://reddit.com/r/getumbrel">
-      <img src="https://img.shields.io/reddit/subreddit-subscribers/getumbrel?style=social">
-    </a>
-    <a href="https://community.getumbrel.com">
-      <img src="https://img.shields.io/badge/community-forum-%235351FB">
-    </a>
-  </p>
-</p>
+# Electrs for Bitcoin — Umbrel GUI
 
-## Getting started
+A modern, independently maintainable Bitcoin Electrs status and wallet-connection interface for Umbrel, based on `getumbrel/umbrel-electrs` v1.0.4.
 
-This app can be installed in one click via the Umbrel App Store.
+## Product contract
 
-## Contributing
+The implementation preserves the official `getumbrel/umbrel-electrs` v1.0.4 facade contract while adding a typed modern API:
 
-We welcome and appreciate new contributions!
+- GUI listener: `3006`;
+- private Electrs Electrum TCP listener: `50001`;
+- official wallet-facing Local/Tor port: `50001`;
+- legacy routes: `/ping`, `/v1/electrs/version`, `/v1/electrs/syncPercent`, and `/v1/electrs/electrum-connection-details`;
+- modern routes: `/api/status` and `/api/connections`;
+- environment: `PORT`, `ELECTRS_HOST`, `ELECTRS_PORT`, `BITCOIN_HOST`, `RPC_PORT`, `RPC_USER`, `RPC_PASSWORD`, `ELECTRUM_PORT`, `ELECTRUM_LOCAL_SERVICE`, and `ELECTRUM_HIDDEN_SERVICE`.
 
-If you're a developer looking to help but not sure where to begin, look for [these issues](https://github.com/getumbrel/umbrel-electrs/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) that have specifically been marked as being friendly to new contributors.
+The insecure inherited RPC-password fallback is intentionally removed: `RPC_PASSWORD` must be injected at runtime. The UI defaults to Local, matching the official Bitcoin GUI.
 
-If you're looking for a bigger challenge, before opening a pull request please [create an issue](https://github.com/getumbrel/umbrel-electrs/issues/new/choose) or [join our community chat](https://t.me/getumbrel) to get feedback, discuss the best way to tackle the challenge, and to ensure that there's no duplication of work.
+## Daemon decision
 
----
+The local Compose fixture retains the original Bitcoin daemon lineage: `getumbrel/electrs:v0.11.1` pinned to the exact digest currently used by the official Umbrel package. `romanz/electrs` v0.11.1 was released on 2026-02-22 and is the current upstream release; it is newer and more appropriate for Bitcoin than the Litecoin-specific maintained fork used by the architecture reference. This GUI does not fork or rebuild the daemon.
 
-[![License](https://img.shields.io/github/license/getumbrel/umbrel-electrs?color=%235351FB)](https://github.com/getumbrel/umbrel-electrs/blob/master/LICENSE.md)
+## Interface
 
-[umbrel.com](https://umbrel.com)
+- React 19, TypeScript, Vite, Fastify, Zod, Radix primitives, and TanStack Query;
+- provider-driven waiting, connecting, indexing, synchronized, and degraded states;
+- exactly six fixed index blocks;
+- independent progress, pulse, and completion layers;
+- Bitcoin-orange semantic actions and progress while retaining the official Electrs product icon;
+- accessible Local/Tor details, exact `host:port` clipboard values, and locally generated QR codes;
+- no telemetry and no logging of request paths, RPC payloads, wallet data, daemon responses, or credentials.
+
+Indexing motion is provider-state driven: a 2.4s `ease-in-out` traveling pulse, 120ms per-block stagger, peak scale 1.055, and brightness 1.65. Completion uses a symmetric 220ms `ease-out` crossfade. Reduced motion hard-disables animation, transform, and filter.
+
+## Development
+
+Requires Node.js 24 LTS and npm 12 for the supported toolchain.
+
+```bash
+npm ci
+npm run lint
+npm run typecheck
+npm test
+npm run test:coverage
+npm audit
+npm run audit:production
+npm run build
+docker compose config -q
+docker build -t umbrel-bitcoin-electrs-gui:candidate .
+```
+
+The production image uses digest-pinned build and Distroless Node runtimes, installs production dependencies only, runs as `1000:1000`, and exposes only `3006`.
+
+## License
+
+This modernization retains the inherited PolyForm Noncommercial License 1.0.0 and historical grant. See `LICENSE.md`, `LICENSE.legacy`, and `THIRD_PARTY_NOTICES.md`.

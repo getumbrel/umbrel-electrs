@@ -1,0 +1,13 @@
+.git
+.github
+.hermes
+node_modules
+coverage
+apps/ui/dist
+dist
+data
+*.log
+.env*
+Dockerfile*
+docker-compose*.yml
+README.md
