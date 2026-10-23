@@ -1,5 +1,5 @@
-const uuidv4 = require('uuid/v4');
+const { randomUUID } = require('node:crypto');
 
 module.exports = {
-  create: uuidv4,
+  create: randomUUID,
 };
